@@ -11,30 +11,32 @@
 #else
 #define LOG_DEBUG(msg, ...) { \
     if ((getenv("LIBCUDA_LOG_LEVEL")!=NULL) && (atoi(getenv("LIBCUDA_LOG_LEVEL"))>=8)) \
-       fprintf(stderr, "Debug(%d:%ld:%s:%d)]: "msg"\n",getpid(),pthread_self(),basename(__FILE__),__LINE__,##__VA_ARGS__); }
+       fprintf(stderr, "Debug(pid:%d thread=%ld %s:%d)]: "msg"\n", getpid(),pthread_self(),basename(__FILE__),__LINE__,##__VA_ARGS__); }
 #endif
 
 #define LOG_INFO(msg, ...) { \
     if ( \
          /*(getenv("LIBCUDA_LOG_LEVEL")==NULL) || */\
          (getenv("LIBCUDA_LOG_LEVEL")!=NULL) && (atoi(getenv("LIBCUDA_LOG_LEVEL"))>=7)) \
-       fprintf(stderr, "Info(%d:%ld:%s:%d)]: "msg"\n", getpid(),pthread_self(),basename(__FILE__),__LINE__,##__VA_ARGS__); }
+       fprintf(stderr, "Info(pid:%d thread=%ld %s:%d)]: "msg"\n", getpid(),pthread_self(),basename(__FILE__),__LINE__,##__VA_ARGS__); }
 
 #define LOG_WARN(msg, ...) { \
     if ( \
         (getenv("LIBCUDA_LOG_LEVEL")==NULL) || \
         ((getenv("LIBCUDA_LOG_LEVEL")!=NULL) && (atoi(getenv("LIBCUDA_LOG_LEVEL"))>=6))) \
-       fprintf(stderr, "Warn(%d:%ld:%s:%d)]: "msg"\n", getpid(),pthread_self(),basename(__FILE__),__LINE__,##__VA_ARGS__); }
+       fprintf(stderr, "Warn(pid:%d thread=%ld %s:%d)]: "msg"\n", getpid(),pthread_self(),basename(__FILE__),__LINE__,##__VA_ARGS__); }
 
 #define LOG_MSG(msg, ...) { \
     if ( \
         (getenv("LIBCUDA_LOG_LEVEL")==NULL) || \
         ((getenv("LIBCUDA_LOG_LEVEL")!=NULL) && (atoi(getenv("LIBCUDA_LOG_LEVEL"))>=5))) \
-       fprintf(stderr, "Msg(%d:%ld:%s:%d)]: "msg"\n", getpid(),pthread_self(),basename(__FILE__),__LINE__,##__VA_ARGS__); }
+       fprintf(stderr, "Msg(pid:%d thread=%ld %s:%d)]: "msg"\n", getpid(),pthread_self(),basename(__FILE__),__LINE__,##__VA_ARGS__); }
 
 #define LOG_ERROR(msg, ...) { \
-    fprintf(stderr, "ERROR (pid:%d thread=%ld %s:%d)]: "msg"\n", getpid(), pthread_self(), basename(__FILE__),__LINE__, ##__VA_ARGS__); \
-}
+    if ( \
+        (getenv("LIBCUDA_LOG_LEVEL")==NULL) || \
+        ((getenv("LIBCUDA_LOG_LEVEL")!=NULL) && (atoi(getenv("LIBCUDA_LOG_LEVEL"))>=4))) \
+       fprintf(stderr, "ERROR(pid:%d thread=%ld %s:%d)]: "msg"\n", getpid(),pthread_self(),basename(__FILE__),__LINE__,##__VA_ARGS__); }
 
 #define CHECK_DRV_API(f)  {                   \
     CUresult status = (f);                    \
